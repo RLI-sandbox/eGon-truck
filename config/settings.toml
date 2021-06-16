@@ -1,0 +1,8 @@
+# Data Directory
+data_path = "data/"
+
+# eGo^n Files
+egon_files = ["eGon-data.grid.hvmv_substation.gpkg", "eGon-data.grid.mv_grid_district.gpkg"]
+
+# BAST Files
+bast_files = ["BAST2019.csv"]
