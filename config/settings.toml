@@ -3,6 +3,22 @@ data_path = "data/"
 
 # eGo^n Files
 egon_files = ["eGon-data.grid.hvmv_substation.gpkg", "eGon-data.grid.mv_grid_district.gpkg"]
+egon_epsg = 3035
 
 # BAST Files
-bast_files = ["BAST2019.csv"]
+bast_file = "BAST2019.csv"
+relevant_columns = ["DTV_SV_MobisSo_Q", "Koor_WGS84_E", "Koor_WGS84_N"]
+bast_epsg = 4326
+
+# NEP data
+# https://www.netzentwicklungsplan.de/sites/default/files/paragraphs-files/NEP_2035_V2021_2_Entwurf_Teil1.pdf
+# total amount of HGVs  - Scenario C 2035
+hgv_amount = 100000
+# HGV traffic annual mileage per vehicle
+hgv_mean_mileage = 100000
+
+# Hydrogen
+# HGV traffic hydrogen consumption in kg per 100 km
+# https://www.autocar.co.uk/car-news/technology-news/under-skin-logic-behind-boschs-plans-hydrogen-fuel-cell-trucks
+# 7 * 100 / 60*1.609344
+hydrogen_consumption = 7.2493
