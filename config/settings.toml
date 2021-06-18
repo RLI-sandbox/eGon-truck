@@ -10,6 +10,10 @@ bast_file = "BAST2019.csv"
 relevant_columns = ["DTV_SV_MobisSo_Q", "Koor_WGS84_E", "Koor_WGS84_N"]
 bast_epsg = 4326
 
+# Germany Shapefile
+germany_json = "germany_hoch.geo.json"
+germany_epsg = 4326
+
 # NEP data
 # https://www.netzentwicklungsplan.de/sites/default/files/paragraphs-files/NEP_2035_V2021_2_Entwurf_Teil1.pdf
 # total amount of HGVs  - Scenario C 2035

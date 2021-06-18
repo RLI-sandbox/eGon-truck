@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 from config.config import settings
 
 
+def mwe_io():
+    print("Please break here.")
+
 def read_egon_gpkgs():
     """ Reads eGo^n Geopackages. File directory and names have to be specified in settings.toml
     """
@@ -36,7 +39,7 @@ def read_bast_data():
 
     name = file.split('.')[0]
     bast_dict[name] = pd.read_csv(
-        os.path.join(directory, file), delimiter=";", decimal=",", index_col=[0])
+        os.path.join(directory, file), delimiter=";", decimal=",")
 
     relevant_df = bast_dict[name][relevant_columns].copy()
 
@@ -52,8 +55,22 @@ def read_bast_data():
 
     return bast_dict
 
-def export_results(hydrogen_consumption):
+def get_germany_gdf():
+    """ Read in German Border from geo.json file. File directory and names have to be specified in settings.toml
     """
+    directory = settings.data_path
+    json = settings.germany_json
+    init_epsg = settings.germany_epsg
+    final_epsg = settings.egon_epsg
+
+    gdf = gpd.read_file(os.path.join(directory, json)).set_crs(
+        epsg=init_epsg, inplace=True
+    ).to_crs(epsg=final_epsg)
+
+    return gdf
+
+def export_results(hydrogen_consumption):
+    """ Export results as CSV and generate a Plot.
     """
     output_dir = settings.output_dir
     output_csv = settings.output_csv
