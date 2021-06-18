@@ -22,3 +22,8 @@ hgv_mean_mileage = 100000
 # https://www.autocar.co.uk/car-news/technology-news/under-skin-logic-behind-boschs-plans-hydrogen-fuel-cell-trucks
 # 7 * 100 / 60*1.609344
 hydrogen_consumption = 7.2493
+
+# Output
+output_dir = "res/"
+output_csv = "hydrogen_consumption_per_mv_grid_district.csv"
+output_png = "hydrogen_consumption_per_mv_grid_district.png"
