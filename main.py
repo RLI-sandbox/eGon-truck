@@ -25,7 +25,7 @@ def run_egon_truck(mode="voronoi"):
             bast_data["truck_data"])
 
         egon_mv_grids["mv_grid_district"] = egon_mv_grids["mv_grid_district"].fillna(0)
-        
+
     else:
         raise ValueError(f"Mode {mode} is not supported.")
 

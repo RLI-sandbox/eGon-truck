@@ -23,9 +23,8 @@ hgv_mean_mileage = 100000
 
 # Hydrogen
 # HGV traffic hydrogen consumption in kg per 100 km
-# https://www.autocar.co.uk/car-news/technology-news/under-skin-logic-behind-boschs-plans-hydrogen-fuel-cell-trucks
-# 7 * 100 / 60*1.609344
-hydrogen_consumption = 7.2493
+# Assumption: 30L Diesel / 100 km --> kgH2/100 km
+hydrogen_consumption = 6.68
 
 # Output
 output_dir = "res/"
