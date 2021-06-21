@@ -9,6 +9,7 @@ from config.config import settings
 
 log = logging.getLogger(__name__)
 
+
 def read_egon_gpkgs():
     """ Reads eGo^n Geopackages. File directory and names have to be specified in settings.toml
     """
@@ -29,6 +30,7 @@ def read_egon_gpkgs():
     log.info("Done.")
 
     return gpkg_dict
+
 
 def read_bast_data():
     """ Reads BAST data. File directory and names have to be specified in settings.toml
@@ -63,6 +65,7 @@ def read_bast_data():
 
     return bast_dict
 
+
 def get_germany_gdf():
     """ Read in German Border from geo.json file. File directory and names have to be specified in settings.toml
     """
@@ -81,6 +84,7 @@ def get_germany_gdf():
 
     return gdf
 
+
 def export_results(hydrogen_consumption, mode):
     """ Export results as CSV and generate a Plot.
     """
@@ -97,7 +101,7 @@ def export_results(hydrogen_consumption, mode):
     hydrogen_consumption = hydrogen_consumption.assign(
         hydrogen_consumption_in_t=hydrogen_consumption.hydrogen_consumption / 1000)
 
-    ax = hydrogen_consumption.plot(column="hydrogen_consumption_in_t", legend=True, legend_kwds={
+    hydrogen_consumption.plot(column="hydrogen_consumption_in_t", legend=True, legend_kwds={
         "label": "Hydrogen Consumption in t"
     })
 
@@ -108,4 +112,3 @@ def export_results(hydrogen_consumption, mode):
     plt.close()
 
     log.info("Done.")
-

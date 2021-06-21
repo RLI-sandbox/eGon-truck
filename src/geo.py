@@ -7,8 +7,8 @@ from config.config import settings
 from shapely.ops import cascaded_union
 from geovoronoi import voronoi_regions_from_coords, points_to_coords
 
-
 log = logging.getLogger(__name__)
+
 
 def check_membership(grid_districts, truck_data):
     """ Maps BAST counting stations to the MV grid districts
@@ -41,6 +41,7 @@ def check_membership(grid_districts, truck_data):
 
     return truck_data
 
+
 def voronoi(points, boundary):
     """ Building a Voronoi Field from points and a boundary
     """
@@ -55,7 +56,8 @@ def voronoi(points, boundary):
     coords = points_to_coords(points.geometry)
 
     # calculate Voronoi regions
-    poly_shapes, pts, unassigned_pts = voronoi_regions_from_coords(coords, boundary_shape, return_unassigned_points=True)
+    poly_shapes, pts, unassigned_pts = voronoi_regions_from_coords(coords, boundary_shape,
+                                                                   return_unassigned_points=True)
 
     poly_gdf = gpd.GeoDataFrame(pd.DataFrame.from_dict(poly_shapes, orient="index", columns=["geometry"]))
 
@@ -82,10 +84,11 @@ def voronoi(points, boundary):
 
     return poly_gdf
 
+
 def geo_intersect(voronoi_gdf, grid_districts, mode="intersection"):
     """ Calculate Intersections between two GeoDataFrames and distribute truck traffic
     """
-    log.info("Calcualting Intersections between Voronoi Field and Grid Districts\n" +
+    log.info("Calculating Intersections between Voronoi Field and Grid Districts\n" +
              "and distributing truck traffic accordingly to the area share.")
     voronoi_gdf = voronoi_gdf.assign(voronoi_id=voronoi_gdf.index.tolist())
 
@@ -93,7 +96,7 @@ def geo_intersect(voronoi_gdf, grid_districts, mode="intersection"):
     intersection_gdf = gpd.overlay(voronoi_gdf, grid_districts[["subst_id", "geometry"]], how=mode)
 
     # Calc Area of Intersections
-    intersection_gdf = intersection_gdf.assign(surface_area=intersection_gdf.geometry.area / 10**6) # km²
+    intersection_gdf = intersection_gdf.assign(surface_area=intersection_gdf.geometry.area / 10 ** 6)  # km²
 
     # Initialize results column
     grid_districts = grid_districts.assign(truck_traffic=0)
@@ -108,7 +111,7 @@ def geo_intersect(voronoi_gdf, grid_districts, mode="intersection"):
         truck_traffic = voronoi_id_intersection_gdf.truck_traffic.iat[0]
 
         for idx, row in voronoi_id_intersection_gdf.iterrows():
-            traffic_share = truck_traffic * row["surface_area"]/total_area
+            traffic_share = truck_traffic * row["surface_area"] / total_area
 
             grid_districts.at[row["subst_id"], "truck_traffic"] += traffic_share
 

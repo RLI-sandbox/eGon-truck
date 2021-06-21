@@ -4,8 +4,8 @@ from .io import get_germany_gdf
 from .geo import voronoi, geo_intersect
 from config.config import settings
 
-
 log = logging.getLogger(__name__)
+
 
 def calculate_total_hydrogen_consumption():
     """ Calculate the total hydrogen demand for trucking in Germany
@@ -19,6 +19,7 @@ def calculate_total_hydrogen_consumption():
     # calculate total hydrogen consumption
     return hgv_amount * hgv_mean_mileage * hydrogen_consumption_per_km  # kg/a
 
+
 def blunt_hydrogen_consumption(truck_data):
     """ Maps hydrogen consumption to the MV Grid Districts in a blunt and direct matter.
     """
@@ -31,9 +32,10 @@ def blunt_hydrogen_consumption(truck_data):
 
     normalized_traffic_volume = traffic_volume[relevant_columns[0]] / traffic_volume[relevant_columns[0]].sum()
 
-    hydrogen_consumption = normalized_traffic_volume*total_hydrogen_consumption
+    hydrogen_consumption = normalized_traffic_volume * total_hydrogen_consumption
 
     return hydrogen_consumption
+
 
 def voronoi_hydrogen_consumption(truck_data, grid_districts):
     """ Maps hydrogen consumption to the MV Grid Districts by building a Voronoi Field.
