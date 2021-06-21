@@ -29,5 +29,5 @@ hydrogen_consumption = 7.2493
 
 # Output
 output_dir = "res/"
-output_csv = "hydrogen_consumption_per_mv_grid_district.csv"
-output_png = "hydrogen_consumption_per_mv_grid_district.png"
+output_csv = "{}_hydrogen_consumption_per_mv_grid_district.csv"
+output_png = "{}_hydrogen_consumption_per_mv_grid_district.png"
