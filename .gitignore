@@ -1,7 +1,8 @@
 # Custom
 # dirs
-data/*
+# data/*
 res/*
+.idea/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
