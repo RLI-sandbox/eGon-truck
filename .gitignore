@@ -1,6 +1,6 @@
 # Custom
 # dirs
-data/*
+# data/*
 res/*
 .idea/*
 
