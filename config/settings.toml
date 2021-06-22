@@ -10,7 +10,7 @@ bast_file = "BAST2019.csv"
 relevant_columns = ["DTV_SV_MobisSo_Q", "Koor_WGS84_E", "Koor_WGS84_N"]
 bast_epsg = 4326
 
-# Germany Shapefile
+# Germany GeoJSON
 germany_json = "germany_hoch.geo.json"
 germany_epsg = 4326
 
@@ -25,6 +25,10 @@ hgv_mean_mileage = 100000
 # HGV traffic hydrogen consumption in kg per 100 km
 # Assumption: 30L Diesel / 100 km --> kgH2/100 km
 hydrogen_consumption = 6.68
+# leakage rate / losses - constant
+# https://www.energy.gov/eere/fuelcells/doe-technical-targets-hydrogen-delivery
+# --> 0.5%
+leakage_rate = 0.005
 
 # Output
 output_dir = "res/"

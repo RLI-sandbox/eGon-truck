@@ -1,4 +1,5 @@
 import logging
+import sys
 
 from src.io import read_egon_gpkgs, read_bast_data, export_results
 from src.geo import check_membership
@@ -6,7 +7,7 @@ from src.demand import blunt_hydrogen_consumption, voronoi_hydrogen_consumption
 
 
 def run_egon_truck(mode="voronoi"):
-    logging.basicConfig(filename='egon_truck.log', level=logging.INFO)
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
     logging.info("=" * 10 + f" Running {mode} mode " + "=" * 10)
 

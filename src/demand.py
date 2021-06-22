@@ -7,17 +7,21 @@ from config.config import settings
 log = logging.getLogger(__name__)
 
 
-def calculate_total_hydrogen_consumption():
+def calculate_total_hydrogen_consumption(leakage=True):
     """ Calculate the total hydrogen demand for trucking in Germany
     """
+    leakage_rate = settings.leakage_rate
     hgv_amount = settings.hgv_amount
     hgv_mean_mileage = settings.hgv_mean_mileage  # km/a
     hydrogen_consumption = settings.hydrogen_consumption  # kg/100km
 
     hydrogen_consumption_per_km = hydrogen_consumption / 100  # kg/km
 
-    # calculate total hydrogen consumption
-    return hgv_amount * hgv_mean_mileage * hydrogen_consumption_per_km  # kg/a
+    # calculate total hydrogen consumption kg/a
+    if leakage:
+        return hgv_amount * hgv_mean_mileage * hydrogen_consumption_per_km / (1-leakage_rate)
+    else:
+        return hgv_amount * hgv_mean_mileage * hydrogen_consumption_per_km
 
 
 def blunt_hydrogen_consumption(truck_data):

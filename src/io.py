@@ -88,7 +88,7 @@ def get_germany_gdf():
 def export_results(hydrogen_consumption, mode):
     """ Export results as CSV and generate a Plot.
     """
-    log.info(f"Export {mode} Results.")
+    log.info(f"Export {mode} results.")
 
     output_dir = settings.output_dir
     output_csv = settings.output_csv
@@ -102,7 +102,7 @@ def export_results(hydrogen_consumption, mode):
         hydrogen_consumption_in_t=hydrogen_consumption.hydrogen_consumption / 1000)
 
     hydrogen_consumption.plot(column="hydrogen_consumption_in_t", legend=True, legend_kwds={
-        "label": "Hydrogen Consumption in t"
+        "label": r"Hydrogen Consumption in t/a"
     })
 
     plt.axis("off")
