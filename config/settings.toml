@@ -14,6 +14,10 @@ bast_epsg = 4326
 germany_json = "germany_hoch.geo.json"
 germany_epsg = 4326
 
+# Federal states shp
+federal_states_shp = "250_NUTS1.shp"
+federal_states_columns = ["NUTS_NAME", "geometry"]
+
 # NEP data
 # https://www.netzentwicklungsplan.de/sites/default/files/paragraphs-files/NEP_2035_V2021_2_Entwurf_Teil1.pdf
 # total amount of HGVs  - Scenario C 2035
@@ -32,5 +36,5 @@ leakage_rate = 0.005
 
 # Output
 output_dir = "res/"
-output_csv = "{}_hydrogen_consumption_per_mv_grid_district.csv"
-output_png = "{}_hydrogen_consumption_per_mv_grid_district.png"
+output_csv = "{}_hydrogen_consumption_per_{}.csv"
+output_png = "{}_hydrogen_consumption_per_{}.png"

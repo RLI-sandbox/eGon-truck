@@ -85,7 +85,31 @@ def get_germany_gdf():
     return gdf
 
 
-def export_results(hydrogen_consumption, mode):
+def get_federal_states_gdf():
+    """ Read in NUTS1 from shp file. File directory and names have to be
+    specified in settings.toml
+    """
+    log.info("Read Federated States SHP.")
+
+    directory = settings.data_path
+    shp = settings.federal_states_shp
+    relevant_columns = settings.federal_states_columns
+    final_epsg = settings.egon_epsg
+
+    gdf = gpd.read_file(os.path.join(directory, shp)).to_crs(
+        epsg=final_epsg)[relevant_columns]
+
+    gdf["area"] = gdf.geometry.area
+
+    gdf = gdf.rename(columns={
+        relevant_columns[0]: "subst_id"})
+
+    log.info("Done.")
+
+    return gdf
+
+
+def export_results(hydrogen_consumption, mode, target_mode):
     """ Export results as CSV and generate a Plot.
     """
     log.info(f"Export {mode} results.")
@@ -96,18 +120,21 @@ def export_results(hydrogen_consumption, mode):
 
     os.makedirs(output_dir, exist_ok=True)
 
-    hydrogen_consumption.to_csv(os.path.join(output_dir, output_csv.format(mode)))
+    hydrogen_consumption.to_csv(os.path.join(
+        output_dir, output_csv.format(mode, target_mode)))
 
     hydrogen_consumption = hydrogen_consumption.assign(
         hydrogen_consumption_in_t=hydrogen_consumption.hydrogen_consumption / 1000)
 
-    hydrogen_consumption.plot(column="hydrogen_consumption_in_t", legend=True, legend_kwds={
-        "label": r"Hydrogen Consumption in t/a"
-    })
+    hydrogen_consumption.plot(column="hydrogen_consumption_in_t", legend=True,
+                              legend_kwds={
+                                  "label": r"Hydrogen Consumption in t/a"
+                              })
 
     plt.axis("off")
 
-    plt.savefig(os.path.join(output_dir, output_png.format(mode)), dpi=300, bbox_inches="tight")
+    plt.savefig(os.path.join(output_dir, output_png.format(
+        mode, target_mode)), dpi=300, bbox_inches="tight")
 
     plt.close()
 

@@ -41,25 +41,28 @@ def blunt_hydrogen_consumption(truck_data):
     return hydrogen_consumption
 
 
-def voronoi_hydrogen_consumption(truck_data, grid_districts):
-    """ Maps hydrogen consumption to the MV Grid Districts by building a Voronoi Field.
+def voronoi_hydrogen_consumption(truck_data, target_shapes):
+    """ Maps hydrogen consumption to the MV Grid Districts by building a
+    Voronoi Field.
     """
     # get german borders
     gdf = get_germany_gdf()
 
     # drop points outside germany and nan values
-    truck_data_within = truck_data.dropna().loc[truck_data.within(gdf.geometry.iat[0])]
+    truck_data_within = truck_data.dropna().loc[
+        truck_data.within(gdf.geometry.iat[0])]
 
     voronoi_gdf = voronoi(truck_data_within, gdf)
 
-    grid_districts = geo_intersect(voronoi_gdf, grid_districts)
+    target_shapes = geo_intersect(voronoi_gdf, target_shapes)
 
     total_hydrogen_consumption = calculate_total_hydrogen_consumption()
 
-    grid_districts = grid_districts.assign(
-        normalized_truck_traffic=grid_districts.truck_traffic / grid_districts.truck_traffic.sum())
+    target_shapes = target_shapes.assign(
+        normalized_truck_traffic=target_shapes.truck_traffic /
+                                 target_shapes.truck_traffic.sum())
 
-    grid_districts = grid_districts.assign(
-        hydrogen_consumption=grid_districts.normalized_truck_traffic * total_hydrogen_consumption)
+    target_shapes = target_shapes.assign(
+        hydrogen_consumption=target_shapes.normalized_truck_traffic * total_hydrogen_consumption)
 
-    return grid_districts
+    return target_shapes

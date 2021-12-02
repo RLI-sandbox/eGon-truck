@@ -45,21 +45,23 @@ def check_membership(grid_districts, truck_data):
 def voronoi(points, boundary):
     """ Building a Voronoi Field from points and a boundary
     """
-    truck_col = settings.relevant_columns[0]
     log.info("Building Voronoi Field.")
 
+    truck_col = settings.relevant_columns[0]
     epsg = settings.egon_epsg
 
     # convert the boundary geometry into a union of the polygon
-    # convert the Geopandas GeoSeries of Point objects to NumPy array of coordinates.
+    # convert the Geopandas GeoSeries of Point objects to NumPy array of
+    # coordinates
     boundary_shape = cascaded_union(boundary.geometry)
     coords = points_to_coords(points.geometry)
 
     # calculate Voronoi regions
-    poly_shapes, pts, unassigned_pts = voronoi_regions_from_coords(coords, boundary_shape,
-                                                                   return_unassigned_points=True)
+    poly_shapes, pts, unassigned_pts = voronoi_regions_from_coords(
+        coords, boundary_shape, return_unassigned_points=True)
 
-    poly_gdf = gpd.GeoDataFrame(pd.DataFrame.from_dict(poly_shapes, orient="index", columns=["geometry"]))
+    poly_gdf = gpd.GeoDataFrame(pd.DataFrame.from_dict(
+        poly_shapes, orient="index", columns=["geometry"]))
 
     # match points to old index
     # FIXME: This seems overcomplicated
@@ -74,7 +76,8 @@ def voronoi(points, boundary):
     poly_gdf.index = points_matched.index
 
     # match truck traffic to new polys
-    poly_gdf = poly_gdf.assign(truck_traffic=points.loc[poly_gdf.index][truck_col])
+    poly_gdf = poly_gdf.assign(truck_traffic=points.loc[
+        poly_gdf.index][truck_col])
 
     poly_gdf = poly_gdf.set_crs(
         epsg=epsg, inplace=True
@@ -93,7 +96,8 @@ def geo_intersect(voronoi_gdf, grid_districts, mode="intersection"):
     voronoi_gdf = voronoi_gdf.assign(voronoi_id=voronoi_gdf.index.tolist())
 
     # Find Intersections between both GeoDataFrames
-    intersection_gdf = gpd.overlay(voronoi_gdf, grid_districts[["subst_id", "geometry"]], how=mode)
+    intersection_gdf = gpd.overlay(
+        voronoi_gdf, grid_districts[["subst_id", "geometry"]], how=mode)
 
     # Calc Area of Intersections
     intersection_gdf = intersection_gdf.assign(surface_area=intersection_gdf.geometry.area / 10 ** 6)  # km²
