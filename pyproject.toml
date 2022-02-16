@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "egon-truck"
+version = "0.1.0"
+description = "eGo^n Hydrogen Heavy Goods Vehicle Traffic (HGV Traffic)"
+authors = ["Kilian Helfenbein <Kilian.Helfenbein@rl-institut.de>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+geopandas = "^0.10.2"
+geovoronoi = "^0.3.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+flake8 = "^4.0.1"
+pyupgrade = "^2.31.0"
+pre-commit = "^2.17.0"
+pylint = "^2.12.2"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
