@@ -1,9 +1,9 @@
 import logging
 import sys
 
-from src.io import read_egon_gpkgs, read_bast_data, export_results
-from src.geo import check_membership
-from src.demand import blunt_hydrogen_consumption, voronoi_hydrogen_consumption
+from egon_truck.demand import blunt_hydrogen_consumption, voronoi_hydrogen_consumption
+from egon_truck.geo import check_membership
+from egon_truck.io import export_results, read_bast_data, read_egon_gpkgs
 
 
 def run_egon_truck(mode="voronoi"):
@@ -17,13 +17,17 @@ def run_egon_truck(mode="voronoi"):
 
     if mode == "voronoi":
         egon_mv_grids["mv_grid_district"] = voronoi_hydrogen_consumption(
-            bast_data["truck_data"], egon_mv_grids["mv_grid_district"])
+            bast_data["truck_data"], egon_mv_grids["mv_grid_district"]
+        )
 
     elif mode == "blunt":
-        bast_data["truck_data"] = check_membership(egon_mv_grids["mv_grid_district"], bast_data["truck_data"])
+        bast_data["truck_data"] = check_membership(
+            egon_mv_grids["mv_grid_district"], bast_data["truck_data"]
+        )
 
-        egon_mv_grids["mv_grid_district"]["hydrogen_consumption"] = blunt_hydrogen_consumption(
-            bast_data["truck_data"])
+        egon_mv_grids["mv_grid_district"][
+            "hydrogen_consumption"
+        ] = blunt_hydrogen_consumption(bast_data["truck_data"])
 
         egon_mv_grids["mv_grid_district"] = egon_mv_grids["mv_grid_district"].fillna(0)
 

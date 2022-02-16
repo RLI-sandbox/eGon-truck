@@ -9,6 +9,8 @@ license = "MIT"
 python = "^3.8"
 geopandas = "^0.10.2"
 geovoronoi = "^0.3.0"
+dynaconf = "^3.1.7"
+matplotlib = "^3.5.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
