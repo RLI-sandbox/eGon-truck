@@ -17,9 +17,19 @@ In total this means 10 Billion km.
 
 ### Scenario eGon100RE
 
-In the case of the eGon100RE scenario it is assumed that the HGV traffic is completly hydrogen-powered.
-The total freight traffic with 40 Billion km is taken from the [BMWk Langfristszenarien GHG emission free scenarios (SNF > 12 t zGG)](https://www.langfristszenarien.de/enertile-explorer-wAssets/docs/LFS3_Langbericht_Verkehr_final.pdf#page=17).
+In the case of the eGon100RE scenario it is assumed that the HGV traffic is completely hydrogen-powered.
+The total freight traffic with 40 Billion km is taken from the [BMWk Langfristszenarien GHG-emission free scenarios (SNF > 12 t zGG)](https://www.langfristszenarien.de/enertile-explorer-wAssets/docs/LFS3_Langbericht_Verkehr_final.pdf#page=17).
 
 ## Methodology
 
 Using a Voronoi interpolation, the censuses of the BASt data is distributed according to the area fractions of the Voronoi fields within each mv grid.
+
+## Results
+
+### Scenario NEP C 2035
+
+[NEP C 2035 results](res/voronoi_nep_scenario_hydrogen_consumption_per_mv_grid_district.png)
+
+### Scenario eGon100RE
+
+[NEP C 2035 results](res/voronoi_egon_scenario_hydrogen_consumption_per_mv_grid_district.png)
