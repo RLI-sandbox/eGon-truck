@@ -1,6 +1,5 @@
 # Custom
 # dirs
-# data/*
 res/*
 .idea/*
 
@@ -82,6 +81,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # IPython
 profile_default/

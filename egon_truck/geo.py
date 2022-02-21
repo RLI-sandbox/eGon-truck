@@ -1,18 +1,25 @@
+from __future__ import annotations
+
 import logging
 
 import geopandas as gpd
 import numpy as np
-import pandas as pd
 
 from geovoronoi import points_to_coords, voronoi_regions_from_coords
+from shapely import wkt
+from shapely.geometry.multipolygon import MultiPolygon
+from shapely.geometry.polygon import Polygon
 from shapely.ops import cascaded_union
 
-from config.config import settings
+from egon_truck.config.config import settings
 
 log = logging.getLogger(__name__)
 
 
-def check_membership(grid_districts, truck_data):
+def check_membership(
+    grid_districts: gpd.GeoDataFrame,
+    truck_data: gpd.GeoDataFrame,
+):
     """Maps BAST counting stations to the MV grid districts"""
     log.info("Mapping BAST counting stations to MV Grid Districts.")
 
@@ -48,12 +55,15 @@ def check_membership(grid_districts, truck_data):
     return truck_data
 
 
-def voronoi(points, boundary):
+def voronoi(
+    points: gpd.GeoDataFrame,
+    boundary: gpd.GeoDataFrame,
+):
     """Building a Voronoi Field from points and a boundary"""
-    truck_col = settings.relevant_columns[0]
     log.info("Building Voronoi Field.")
 
-    epsg = settings.egon_epsg
+    truck_col = settings["data"].relevant_columns[0]
+    epsg = settings["data"].egon_epsg
 
     # convert the boundary geometry into a union of the polygon
     # convert the Geopandas GeoSeries of Point objects to NumPy array of coordinates.
@@ -65,8 +75,17 @@ def voronoi(points, boundary):
         coords, boundary_shape, return_unassigned_points=True
     )
 
-    poly_gdf = gpd.GeoDataFrame(
-        pd.DataFrame.from_dict(poly_shapes, orient="index", columns=["geometry"])
+    multipoly_shapes = {}
+
+    for key, shape in poly_shapes.items():
+        if isinstance(shape, Polygon):
+            shape = wkt.loads(str(shape))
+            shape = MultiPolygon([shape])
+
+        multipoly_shapes[key] = [shape]
+
+    poly_gdf = gpd.GeoDataFrame.from_dict(
+        multipoly_shapes, orient="index", columns=["geometry"]
     )
 
     # match points to old index
@@ -91,11 +110,15 @@ def voronoi(points, boundary):
     return poly_gdf
 
 
-def geo_intersect(voronoi_gdf, grid_districts, mode="intersection"):
+def geo_intersect(
+    voronoi_gdf: gpd.GeoDataFrame,
+    grid_districts: gpd.GeoDataFrame,
+    mode: str = "intersection",
+):
     """Calculate Intersections between two GeoDataFrames and distribute truck traffic"""
     log.info(
         "Calculating Intersections between Voronoi Field and Grid Districts\n"
-        + "and distributing truck traffic accordingly to the area share."
+        "and distributing truck traffic accordingly to the area share."
     )
     voronoi_gdf = voronoi_gdf.assign(voronoi_id=voronoi_gdf.index.tolist())
 
