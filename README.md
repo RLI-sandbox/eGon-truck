@@ -28,8 +28,8 @@ Using a Voronoi interpolation, the censuses of the BASt data is distributed acco
 
 ### Scenario NEP C 2035
 
-[NEP C 2035 results](res/voronoi_nep_scenario_hydrogen_consumption_per_mv_grid_district.png)
+![NEP C 2035 results](res/voronoi_nep_scenario_hydrogen_consumption_per_mv_grid_district.png)
 
 ### Scenario eGon100RE
 
-[NEP C 2035 results](res/voronoi_egon_scenario_hydrogen_consumption_per_mv_grid_district.png)
+![NEP C 2035 results](res/voronoi_egon_scenario_hydrogen_consumption_per_mv_grid_district.png)
