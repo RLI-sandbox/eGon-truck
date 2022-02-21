@@ -1,0 +1,48 @@
+[data]
+# Data Directory
+data_path = "data/"
+# eGo^n Files
+egon_files = ["eGon-data.grid.hvmv_substation.gpkg", "eGon-data.grid.mv_grid_district.gpkg"]
+egon_epsg = 3035
+# BAST Files
+bast_file = "Jawe2020.csv"
+relevant_columns = ["DTV_SV_MobisSo_Q", "Koor_WGS84_E", "Koor_WGS84_N"]
+bast_epsg = 4326
+# Germany GeoJSON
+germany_json = "germany_hoch.geo.json"
+germany_epsg = 4326
+
+[constants]
+# Hydrogen
+# HGV traffic hydrogen consumption in kg per 100 km
+# Assumption: 30L Diesel / 100 km --> kgH2/100 km
+hydrogen_consumption = 6.68
+# leakage rate / losses - constant
+# https://www.energy.gov/eere/fuelcells/doe-technical-targets-hydrogen-delivery
+# --> 0.5%
+leakage = true
+leakage_rate = 0.005
+# share of FCEV trucks
+# within the egon project the flat guess is 100%
+fcev_share = 1
+
+[nep_scenario]
+# NEP data
+# https://www.netzentwicklungsplan.de/sites/default/files/paragraphs-files/NEP_2035_V2021_2_Entwurf_Teil1.pdf
+# total amount of HGVs  - Scenario C 2035
+# hgv_amount = 100000
+# HGV traffic annual mileage per vehicle
+# hgv_mean_mileage = 100000
+# Total mileage
+hgv_mileage = 10000000000
+
+[egon_scenario]
+# langfristszenarien
+# https://www.langfristszenarien.de/enertile-explorer-wAssets/docs/LFS3_Langbericht_Verkehr_final.pdf#page=17
+hgv_mileage = 40000000000
+
+[results]
+# Output
+output_dir = "res/"
+output_csv = "{}_{}_hydrogen_consumption_per_mv_grid_district.csv"
+output_png = "{}_{}_hydrogen_consumption_per_mv_grid_district.png"

@@ -1,11 +1,14 @@
+from __future__ import annotations
+
 import logging
-import os
+
+from pathlib import Path
 
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from config.config import settings
+from egon_truck.config.config import settings
 
 log = logging.getLogger(__name__)
 
@@ -17,17 +20,15 @@ def read_egon_gpkgs():
     """
     log.info("Read eGo^n data.")
 
-    directory = settings.data_path
-    files = settings.egon_files
-    epsg = settings.egon_epsg
+    directory = Path(settings["data"].data_path).resolve()
+    files = settings["data"].egon_files
+    epsg = settings["data"].egon_epsg
 
     gpkg_dict = {}
 
     for f in files:
         idx = f.split(".")[-2]
-        gpkg_dict[idx] = gpd.read_file(os.path.join(directory, f)).set_crs(
-            epsg=epsg, inplace=True
-        )
+        gpkg_dict[idx] = gpd.read_file(directory / f).set_crs(epsg=epsg, inplace=True)
 
     log.info("Done.")
 
@@ -40,20 +41,24 @@ def read_bast_data():
     """
     log.info("Read BAST data.")
 
-    directory = settings.data_path
-    file = settings.bast_file
-    relevant_columns = settings.relevant_columns
-    init_epsg = settings.bast_epsg
-    final_epsg = settings.egon_epsg
+    directory = Path(settings["data"].data_path).resolve()
+    file = settings["data"].bast_file
+    relevant_columns = settings["data"].relevant_columns
+    init_epsg = settings["data"].bast_epsg
+    final_epsg = settings["data"].egon_epsg
 
     bast_dict = {}
 
     name = file.split(".")[0]
     bast_dict[name] = pd.read_csv(
-        os.path.join(directory, file), delimiter=r";", decimal=r",", thousands=r"."
+        directory / file,
+        delimiter=r";",
+        decimal=r",",
+        thousands=r".",
+        encoding="ISO-8859-1",
     )
 
-    relevant_df = bast_dict[name][relevant_columns].copy()
+    relevant_df = bast_dict[name][relevant_columns].copy()  # type: pd.DataFrame
 
     relevant_df[relevant_columns[0]] = relevant_df[relevant_columns[0]].astype(float)
 
@@ -82,13 +87,13 @@ def get_germany_gdf():
     """
     log.info("Read Germany GeoJSON.")
 
-    directory = settings.data_path
-    json = settings.germany_json
-    init_epsg = settings.germany_epsg
-    final_epsg = settings.egon_epsg
+    directory = Path(settings["data"].data_path).resolve()
+    json = settings["data"].germany_json
+    init_epsg = settings["data"].germany_epsg
+    final_epsg = settings["data"].egon_epsg
 
     gdf = (
-        gpd.read_file(os.path.join(directory, json))
+        gpd.read_file(directory / json)
         .set_crs(epsg=init_epsg, inplace=True)
         .to_crs(epsg=final_epsg)
     )
@@ -98,17 +103,21 @@ def get_germany_gdf():
     return gdf
 
 
-def export_results(hydrogen_consumption, mode):
+def export_results(
+    hydrogen_consumption: gpd.GeoDataFrame,
+    mode: str,
+    scenario: str = "nep_scenario",
+) -> object:
     """Export results as CSV and generate a Plot."""
-    log.info(f"Export {mode} results.")
+    log.info(f"Export {mode} results for scenario {scenario}.")
 
-    output_dir = settings.output_dir
-    output_csv = settings.output_csv
-    output_png = settings.output_png
+    output_dir = Path(settings["results"].output_dir).resolve()
+    output_csv = settings["results"].output_csv
+    output_png = settings["results"].output_png
 
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    hydrogen_consumption.to_csv(os.path.join(output_dir, output_csv.format(mode)))
+    hydrogen_consumption.to_csv(output_dir / output_csv.format(mode, scenario))
 
     hydrogen_consumption = hydrogen_consumption.assign(
         hydrogen_consumption_in_t=hydrogen_consumption.hydrogen_consumption / 1000
@@ -123,7 +132,7 @@ def export_results(hydrogen_consumption, mode):
     plt.axis("off")
 
     plt.savefig(
-        os.path.join(output_dir, output_png.format(mode)), dpi=300, bbox_inches="tight"
+        output_dir / output_png.format(mode, scenario), dpi=300, bbox_inches="tight"
     )
 
     plt.close()
