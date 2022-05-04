@@ -35,6 +35,28 @@ def read_egon_gpkgs():
     return gpkg_dict
 
 
+def read_nuts_3():
+    """Read in NUTS3 from shp file. File directory and names have to be
+    specified in settings.toml
+    """
+    log.info("Read NUTS-3 SHP.")
+
+    directory = Path(settings["data"].data_path).resolve()
+    shp = settings["data"].nuts_3_shp
+    relevant_columns = settings["data"].nuts_3_columns
+    final_epsg = settings["data"].egon_epsg
+
+    gdf = gpd.read_file(directory / shp).to_crs(epsg=final_epsg)[relevant_columns]
+
+    gdf["area"] = gdf.geometry.area
+
+    gdf = gdf.rename(columns={relevant_columns[0]: "subst_id"})
+
+    log.info("Done.")
+
+    return gdf
+
+
 def read_bast_data():
     """
     Reads BAST data. File directory and names have to be specified in settings.toml
@@ -80,7 +102,7 @@ def read_bast_data():
     return bast_dict
 
 
-def get_germany_gdf():
+def get_germany_gdf() -> gpd.GeoDataFrame:
     """
     Read in German Border from geo.json file. File directory and names have to be
     specified in settings.toml
@@ -106,8 +128,9 @@ def get_germany_gdf():
 def export_results(
     hydrogen_consumption: gpd.GeoDataFrame,
     mode: str,
-    scenario: str = "nep_scenario",
-) -> object:
+    scenario: str,
+    target: str,
+):
     """Export results as CSV and generate a Plot."""
     log.info(f"Export {mode} results for scenario {scenario}.")
 
@@ -117,7 +140,7 @@ def export_results(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    hydrogen_consumption.to_csv(output_dir / output_csv.format(mode, scenario))
+    hydrogen_consumption.to_csv(output_dir / output_csv.format(mode, scenario, target))
 
     hydrogen_consumption = hydrogen_consumption.assign(
         hydrogen_consumption_in_t=hydrogen_consumption.hydrogen_consumption / 1000
@@ -132,7 +155,9 @@ def export_results(
     plt.axis("off")
 
     plt.savefig(
-        output_dir / output_png.format(mode, scenario), dpi=300, bbox_inches="tight"
+        output_dir / output_png.format(mode, scenario, target),
+        dpi=300,
+        bbox_inches="tight",
     )
 
     plt.close()

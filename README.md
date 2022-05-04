@@ -22,14 +22,14 @@ The total freight traffic with 40 Billion km is taken from the [BMWk Langfristsz
 
 ## Methodology
 
-Using a Voronoi interpolation, the censuses of the BASt data is distributed according to the area fractions of the Voronoi fields within each mv grid.
+Using a Voronoi interpolation, the censuses of the BASt data is distributed according to the area fractions of the Voronoi fields within each mv grid or any other geometries like NUTS-3.
 
 ## Results
 
 ### Scenario NEP C 2035
 
-![NEP C 2035 results](res/voronoi_nep_scenario_hydrogen_consumption_per_mv_grid_district.png)
+![NEP C 2035 results](res/voronoi_nep_scenario_nuts-3_hydrogen_consumption_per.png)
 
 ### Scenario eGon100RE
 
-![NEP C 2035 results](res/voronoi_egon_scenario_hydrogen_consumption_per_mv_grid_district.png)
+![NEP C 2035 results](res/voronoi_egon_scenario_nuts-3_hydrogen_consumption_per.png)
