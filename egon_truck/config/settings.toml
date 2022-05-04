@@ -11,6 +11,9 @@ bast_epsg = 4326
 # Germany GeoJSON
 germany_json = "germany_hoch.geo.json"
 germany_epsg = 4326
+# NUTS-3 shp
+nuts_3_shp = "2500_NUTS3.shp"
+nuts_3_columns = ["NUTS_CODE", "NUTS_NAME", "geometry"]
 
 [constants]
 # Hydrogen
@@ -44,5 +47,5 @@ hgv_mileage = 40000000000
 [results]
 # Output
 output_dir = "res/"
-output_csv = "{}_{}_hydrogen_consumption_per_mv_grid_district.csv"
-output_png = "{}_{}_hydrogen_consumption_per_mv_grid_district.png"
+output_csv = "{}_{}_{}_hydrogen_consumption_per.csv"
+output_png = "{}_{}_{}_hydrogen_consumption_per.png"
