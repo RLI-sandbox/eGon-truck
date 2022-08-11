@@ -47,5 +47,5 @@ hgv_mileage = 40000000000
 [results]
 # Output
 output_dir = "res/"
-output_csv = "{}_{}_{}_hydrogen_consumption_per.csv"
-output_png = "{}_{}_{}_hydrogen_consumption_per.png"
+output_csv = "{}_{}_hydrogen_consumption_per_{}.csv"
+output_png = "{}_{}_hydrogen_consumption_per_{}.png"
